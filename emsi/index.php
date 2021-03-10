@@ -1,69 +1,34 @@
 <html dir=ltr lang=ua>
 <head>
 <meta charset=UTF-8 />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<style>
+a
+{
+	color: green !important;
+}
+</style>
 </head>
-<?php 
-require_once('includes/config.php');
-require_once('includes/connect.php');
+<div style="padding:  2rem !important;"  class="container"> 
+<h1 style="text-align: center">Парсер сайта Emsi.com.ua</h1>
 
-$items = (new GetNewItems($conn))->get();
+<div style="margin-top:  2rem !important;"  class="row">  
 
-foreach($items as $item)
-{
-	$id_vitoks = $item['id_vitoks'];
-	$vendor_code = $item['vendor_code'];
-	$category = $item['category'];
-	$price = $item['price'];
-	$available = $item['available'];
-	$name = $item['name'];
-	$description = $item['description'];
-	$image = $item['image'];
-	$parent_id = $item['parent_id'];
-	
-	//echo "$id_vitoks	$vendor_code 	$category 	$price 		$available 	$name 	$description 	$image <br>";
-	
-	$checkNew = (new CheckNewItems($conn, $id_vitoks))->check();
-	
-	if($checkNew)
-	{
-		echo "Добавление нового продукта<br>";
-		$insert = (new InsertNewItems($conn, $id_vitoks, $vendor_code, $price, $image, $available))->insert(); //добавление нового продукта в базу
-		echo "Товар $insert добавлен <br>";
-		$insert_description = (new InsertDescription($conn, $insert, $name, $description))->insert(); //добавление описания
-		echo $insert_description;
-		$insert_category = (new InsertCategory($conn, $insert, $category, $parent_id))->insert(); //добавление категории
-		echo $insert_category;
-		$insert_store = (new InsertStore($conn, $insert))->insert(); //добавление магазина
-		echo $insert_store;
-		$insert_layout = (new InsertLayout($conn, $insert))->insert(); //добавление layout
-		echo $insert_layout;
-		$update_pre_base = (new UpdatePreBase($conn, $id_vitoks))->update(); //обновление предварительной базы
-		echo $update_pre_base;
-	}
-	else
-	{
-		echo "Продукт $id_vitoks уже ест в базе<br>";
-	}
-}
+<div>
 
+<a href="parser_emsi.php" target="_blank">Сбор url отдельных страниц</a><br>
+<a href="parser_articles_emsi.php" target="_blank">Сбор текстов страниц и добавление в базу</a><br>
+<a href="cleaner_emsi.php" target="_blank">Очистка статей от муссора</a><br>
+<a href="images_emsi.php" target="_blank">Первоначальная загрузка изображений</a><br>
+<a href="show_cat.php?id=1&cat_name=Різне&origin=emsy&sort_by=body_ua DESC&slug=rizne" target="_blank">Просмотр категорий</a><br>
+ 
+ 
+ 
 
-
-
-$images = (new GetAllImages($conn))->get();
-
-foreach($images as $image)
-{
-	$base_image =  'cristals.com.ua/www/image/catalog/'.basename($image);
-	
-	if (in_array($base_image, $contents_photo))
-	{
-		//echo "Картинка $base_image уже есть в базе<br>";
-	}
-	else
-	{
-		echo "Новая картинка $image<br>";
-		$upload = ftp_put($conn_id, $base_image , $image, FTP_BINARY);
-	}
-	
-	
-}
+  </div>
+ 
+ </div>
+ </div>

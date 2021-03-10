@@ -8,7 +8,7 @@ if($conn === false){
 mysqli_set_charset($conn , 'utf8' );
 
 spl_autoload_register(function ($class_name) {
-    include 'class/'.$class_name . '.php';
+    include '../class/'.$class_name . '.php';
 });
 
 
@@ -21,17 +21,10 @@ if ((!$conn_id) || (!$login_result)) {
         echo "<br>Попытка подключения к серверу FTP_SERVER под именем FTP_USER!";
         exit; 
     } else {
-        echo "Соединение с веб-сервером установлено<br>";
+        //echo "Соединение с веб-сервером установлено<br>";
     }
 	
-	
-	$contents_photo = ftp_nlist($conn_id, "cristals.com.ua//www/image/catalog/");
 
-
-
-//echo "Соединение установлено";
-//$start_date = date('Y-m-d H:i:s');
-//$start = microtime(true); //начало измерения
 
 
 
